@@ -1,5 +1,5 @@
 package code;
-
+import image.APImage;
 import image.Pixel;
 
 public class ImageManipulation {
@@ -8,8 +8,12 @@ public class ImageManipulation {
      *  Write a statement that will display the image in a window
      */
     public static void main(String[] args) {
+        String filename = "cyberpunk2077.jpg";
+        APImage image = new APImage(filename);
+        image.draw();
 
-
+        grayScale(filename);
+        blackAndWhite(filename);
     }
 
     /** CHALLENGE ONE: Grayscale
@@ -21,7 +25,17 @@ public class ImageManipulation {
      * Calculate the average of the red, green, and blue components of the pixel.
      * Set the red, green, and blue components to this average value. */
     public static void grayScale(String pathOfFile) {
-
+        APImage image = new APImage(pathOfFile);
+        for (int i = 0; i < image.getWidth(); i++){
+            for (int j = 0; j < image.getHeight(); j++){
+                Pixel p = image.getPixel(i, j);
+                int avg = getAverageColour(p);
+                p.setBlue(avg);
+                p.setGreen(avg);
+                p.setRed(avg);
+            }
+        }
+        image.draw();
     }
 
     /** A helper method that can be used to assist you in each challenge.
@@ -30,7 +44,8 @@ public class ImageManipulation {
      * @return the average RGB value
      */
     private static int getAverageColour(Pixel pixel) {
-        return 0;
+        int total = pixel.getBlue() + pixel.getGreen() + pixel.getRed();
+        return total/3;
     }
 
     /** CHALLENGE TWO: Black and White
@@ -43,7 +58,23 @@ public class ImageManipulation {
      * If the average is less than 128, set the pixel to black
      * If the average is equal to or greater than 128, set the pixel to white */
     public static void blackAndWhite(String pathOfFile) {
-
+        APImage image = new APImage(pathOfFile);
+        for (int i = 0; i < image.getWidth(); i++){
+            for (int j = 0; j < image.getHeight(); j++){
+                Pixel p = image.getPixel(i, j);
+                int avg = getAverageColour(p);
+                if (avg < 128){
+                    p.setRed(0);
+                    p.setBlue(0);
+                    p.setGreen(0);
+                } else {
+                    p.setRed(255);
+                    p.setBlue(255);
+                    p.setGreen(255);
+                }
+            }
+        }
+        image.draw();
     }
 
     /** CHALLENGE Three: Edge Detection
